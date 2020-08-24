@@ -17,9 +17,23 @@ function App() {
     axios.get('/api/tickets').then((response) => setTicketArr(response.data));
   }, []);
 
-  async function filterTickets(textVal) {
-    const { data } = await axios.get(`/api/tickets?searchText=${textVal}`);
-    setTicketArr(data);
+  function revealHidden() {
+    const newArr = TicketArr.slice();
+    newArr.forEach((ticket, i) => {
+      if (ticket.hasOwnProperty('hidden')) {
+        delete newArr[i].hidden;
+      }
+    });
+    setHiddenCounter(0);
+    setTicketArr(newArr);
+  }
+
+  function filterTickets(textVal) {
+    // if (hiddenCounter > 0) {
+    //   revealHidden();
+    // }
+    axios.get(`/api/tickets?searchText=${textVal}`)
+      .then((response) => setTicketArr(response.data));
   }
 
   function hideItem(id) {
@@ -32,16 +46,7 @@ function App() {
       }
     });
   }
-  function revealHidden() {
-    const newArr = TicketArr.slice();
-    newArr.forEach((ticket, i) => {
-      if (ticket.hasOwnProperty('hidden')) {
-        delete ticket.hidden;
-      }
-    });
-    setHiddenCounter(0);
-    setTicketArr(newArr);
-  }
+
   return (
     <div className="myApp">
       <Header />

@@ -7,7 +7,7 @@ function Ticket(props) {
   const {
     content, title, userEmail, labels, creationTime, id, hidden,
   } = props.ticket;
-  const [smallerContent, setSmallerContent] = useState(() => {
+  const smallerContentFunc = () => {
     const myString = content;
     let smaller = '';
     if (myString.length > 420) {
@@ -17,7 +17,8 @@ function Ticket(props) {
       return smaller;
     }
     return myString;
-  });
+  };
+  const smallerContent = smallerContentFunc();
   const [contentToDisplay, setContent] = useState(smallerContent);
   function showMoreOrLess() {
     if (contentToDisplay.length > 420) {
@@ -26,12 +27,16 @@ function Ticket(props) {
       setContent(content);
     }
   }
+  useEffect(() => {
+    setContent(smallerContent);
+  }, [props]);
+
   let subject = 'Re: ';
   function buildingDate() {
     const newDate = new Date(creationTime);
     const year = `${newDate.getDate()}/${(newDate.getMonth() === 12) ? 1 : newDate.getMonth() + 1}/${newDate.getFullYear()}`;
     const day = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
-    return (year +' '+ day);
+    return (`${year} ${day}`);
   }
   subject += title;
 

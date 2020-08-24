@@ -10,7 +10,10 @@ app.get('/api/tickets', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);
   console.log(req.query.searchText);
-  if (req.query.searchText) {
+  if (req.query.searchText === '') {
+    console.log('fuckingFoundIt');
+  }
+  if (req.query.searchText && req.query.searchText !== '') {
     // eslint-disable-next-line max-len
     const filteredArr = tickets.filter((ticket) => {
       const lowerCaseTitle = ticket.title.toLowerCase();
