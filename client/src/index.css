@@ -1,12 +1,82 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  background-color: rgb(196, 208, 216);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.ticketContainer{
+  margin: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items:  center;
+  justify-content: space-evenly;
+}
+.ticket{
+  width: 60vh;
+  padding: 1vh;
+  margin-top: 2vh;
+  background-color:rgb(112, 138, 161);
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 0 10px #000;
+}
+.ticketTitle{
+  font-size: 1.6rem;
+  font-weight: 500;
 
+}
+.ticketContent{
+  margin: 1vh;
+  font-size: 1.25rem;
+}
+.viewMore{
+  font-size:1.2rem;
+  height: 0.5vh;
+  font-weight: 500;
+  cursor: pointer;
+  color: rgb(117, 201, 235);
+  margin-left: 1vh;
+  display: inline-block;
+}
+.ticketFooter{
+  display:flex;
+  justify-content: space-between;
+}
+.mailAndTime{
+  display:flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.time{
+  margin-left: 0.7vh;
+}
+.mail{
+  color:rgb(219, 162, 97);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.labelBtn{
+  margin-left: 0.7vh;
+  background-color: rgb(88, 88, 219);
+  border-radius: 5px;
+  border-width: 0.05rem;
+  font-size: 1.1rem;
+  font-family: cursive;
+}
+.header{
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightblue;
+  height: 12vh;
+}
+.headerInner{
+  
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
