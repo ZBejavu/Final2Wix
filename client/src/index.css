@@ -86,7 +86,7 @@ body {
 }
 .hideTicketButton:hover{
   cursor:pointer;
-  color: rgb(177, 31, 31);
+  color: rgb(33, 119, 200);
   opacity: 1;
 }
 .hideTicketButton{

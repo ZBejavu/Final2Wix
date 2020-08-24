@@ -34,9 +34,10 @@ function Ticket(props) {
   let subject = 'Re: ';
   function buildingDate() {
     const newDate = new Date(creationTime);
-    const year = `${newDate.getDate()}/${(newDate.getMonth() === 12) ? 1 : newDate.getMonth() + 1}/${newDate.getFullYear()}`;
-    const day = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
-    return (`${year} ${day}`);
+    const year = `${(newDate.getMonth() === 12) ? 1 : newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`;
+    //const day = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
+    const day = newDate.toLocaleTimeString();
+    return (`${year} , ${day}`);
   }
   subject += title;
 

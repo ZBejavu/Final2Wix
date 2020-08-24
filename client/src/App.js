@@ -75,7 +75,7 @@ function App() {
               >
                 (
                 <span id="hideTicketsCounter">{hiddenCounter}</span>
-                hidden ticket -
+                hidden tickets -
                 <div id="restoreHideTickets" onClick={() => revealHidden()}> restore</div>
                 )
               </div>
