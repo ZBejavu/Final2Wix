@@ -9,7 +9,7 @@ const fs = require('fs');
 app.get('/api/tickets', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);
-  console.log('getting list');
+  console.log(req.query.searchText);
   if (req.query.searchText) {
     // eslint-disable-next-line max-len
     const filteredArr = tickets.filter((ticket) => {

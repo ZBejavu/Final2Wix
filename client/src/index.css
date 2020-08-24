@@ -15,12 +15,13 @@ body {
   justify-content: space-evenly;
 }
 .ticket{
-  width: 60vh;
+  width: 80vh;
   padding: 1vh;
   margin-top: 2vh;
-  background-color:rgb(112, 138, 161);
+  background-color:rgb(180, 199, 216);
   box-sizing: border-box;
   border-radius: 4px;
+  word-wrap: break-word;
   box-shadow: 0 0 10px #000;
 }
 .ticketTitle{
@@ -37,9 +38,15 @@ body {
   height: 0.5vh;
   font-weight: 500;
   cursor: pointer;
-  color: rgb(117, 201, 235);
+  color: rgb(67, 154, 236);
   margin-left: 1vh;
   display: inline-block;
+}
+.myApp{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .ticketFooter{
   display:flex;
@@ -50,15 +57,38 @@ body {
   justify-content: center;
   align-items: flex-start;
 }
+.showingResults{
+  width: 80vh;
+}
 .time{
   margin-left: 0.7vh;
 }
 .mail{
-  color:rgb(219, 162, 97);
+  color:rgb(167, 109, 44);
   font-size: 1.1rem;
   cursor: pointer;
 }
-.labelBtn{
+#labelBtn:hover{
+  cursor: default;
+  transform:scale(1);
+  box-shadow: 0 0 2.5px #000;
+  
+}
+.hideMe:hover{
+  cursor:pointer;
+  color: rgb(177, 31, 31);
+  opacity: 1;
+}
+.hideMe{
+  opacity: 0;
+  transition: all 0.2s;
+  float: right;
+  font-size:1.5rem;
+  color:transparent;
+}
+#labelBtn{
+  transition-duration: 0.2s;
+  cursor: default;
   margin-left: 0.7vh;
   background-color: rgb(88, 88, 219);
   border-radius: 5px;
@@ -69,14 +99,13 @@ body {
 .header{
   font-size: 3rem;
   display: flex;
+  width:100%;
   justify-content: center;
   align-items: center;
   background-color: lightblue;
   height: 12vh;
 }
-.headerInner{
-  
-}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import logo from './logo.svg';
 // import Ticket from './components/Ticket'
-import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 function Ticket({ ticket }) {
   const {
@@ -10,8 +10,8 @@ function Ticket({ ticket }) {
   const [smallerContent, setSmallerContent] = useState(() => {
     const myString = content;
     let smaller = '';
-    if (myString.length > 260) {
-      for (let i = 0; i < 260; i++) {
+    if (myString.length > 400) {
+      for (let i = 0; i < 400; i++) {
         smaller += myString[i];
       }
       return smaller;
@@ -20,7 +20,7 @@ function Ticket({ ticket }) {
   });
   const [contentToDisplay, setContent] = useState(smallerContent);
   function showMoreOrLess() {
-    if (contentToDisplay.length > 260) {
+    if (contentToDisplay.length > 400) {
       setContent(smallerContent);
     } else {
       setContent(content);
@@ -29,14 +29,16 @@ function Ticket({ ticket }) {
 
   return (
     <div className="ticket">
+      <div className="hideMe">hide</div>
       <div className="ticketTitle">{title}</div>
       <div className="ticketContent">
         {contentToDisplay}
         {
-            (content.length > 260)
-              ? (contentToDisplay.length < 261)
-                ? <div onClick={()=>{showMoreOrLess()}} className="viewMore">show more</div>
-                : <div onClick={()=>{showMoreOrLess()}} className="viewMore">show less</div>
+            // eslint-disable-next-line no-nested-ternary
+            (content.length > 400)
+              ? (contentToDisplay.length < 401)
+                ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
+                : <div onClick={() => { showMoreOrLess(); }} className="viewMore">see less</div>
               : <div />
         }
       </div>
@@ -52,7 +54,7 @@ function Ticket({ ticket }) {
         <div className="labels">
           {
               (labels)
-                ? labels.map((label) => <button className="labelBtn">{label}</button>)
+                ? labels.map((label) => <Button id="labelBtn" className="label" variant="contained" style={{ textTransform: 'none', marginLeft: '1rem' }} color="primary">{label}</Button>)
                 : <div />
             }
         </div>
