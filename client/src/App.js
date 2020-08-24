@@ -12,18 +12,36 @@ import './App.css';
 
 function App() {
   const [TicketArr, setTicketArr] = useState([]);
+  const [hiddenCounter, setHiddenCounter] = useState(0);
   useEffect(() => {
-    const newDate = new Date(1542111235544);
-    console.log(newDate);
     axios.get('/api/tickets').then((response) => setTicketArr(response.data));
   }, []);
+
   async function filterTickets(textVal) {
     const { data } = await axios.get(`/api/tickets?searchText=${textVal}`);
     setTicketArr(data);
-    // axios.get(`/api/tickets/?searchText=${textVal}`)
-    //   .then((response) => { setTicketArr(response.data); });
   }
 
+  function hideItem(id) {
+    const newArr = TicketArr.slice();
+    newArr.forEach((ticket, i) => {
+      if (ticket.id === id) {
+        newArr[i].hidden = true;
+        setTicketArr(newArr);
+        setHiddenCounter(hiddenCounter + 1);
+      }
+    });
+  }
+  function revealHidden() {
+    const newArr = TicketArr.slice();
+    newArr.forEach((ticket, i) => {
+      if (ticket.hasOwnProperty('hidden')) {
+        delete ticket.hidden;
+      }
+    });
+    setHiddenCounter(0);
+    setTicketArr(newArr);
+  }
   return (
     <div className="myApp">
       <Header />
@@ -38,13 +56,29 @@ function App() {
       />
       <div className="ticketContainer">
         <div className="showingResults">
-          Showing
-          {TicketArr.length}
-          {' '}
-          Results
+          <div>
+            Showing
+            {TicketArr.length}
+            {' '}
+            Results
+          </div>
+          {
+            hiddenCounter > 0 ? (
+              <div style={{
+                color: 'grey', display: 'flex', alignItems: 'space-between', marginLeft: '1vh',
+              }}
+              >
+                (
+                <span id="hideTicketsCounter">{hiddenCounter}</span>
+                hidden ticket -
+                <div id="restoreHideTickets" onClick={() => revealHidden()}> restore</div>
+                )
+              </div>
+            ) : <div />
+          }
         </div>
         {
-        TicketArr.map((ticket) => <Ticket ticket={ticket} />)
+        TicketArr.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} />)
       }
       </div>
     </div>

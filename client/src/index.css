@@ -59,6 +59,16 @@ body {
 }
 .showingResults{
   width: 80vh;
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: bold;
+  align-items: flex-start;
+}
+#restoreHideTickets:hover{
+  cursor: pointer;
+}
+#restoreHideTickets{
+  color:rgb(79, 79, 230);
 }
 .time{
   margin-left: 0.7vh;
@@ -74,12 +84,12 @@ body {
   box-shadow: 0 0 2.5px #000;
   
 }
-.hideMe:hover{
+.hideTicketButton:hover{
   cursor:pointer;
   color: rgb(177, 31, 31);
   opacity: 1;
 }
-.hideMe{
+.hideTicketButton{
   opacity: 0;
   transition: all 0.2s;
   float: right;
