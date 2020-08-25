@@ -9,10 +9,6 @@ const fs = require('fs');
 app.get('/api/tickets', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);
-  console.log(req.query.searchText);
-  if (req.query.searchText === '') {
-    console.log('fuckingFoundIt');
-  }
   if (req.query.searchText && req.query.searchText !== '') {
     // eslint-disable-next-line max-len
     const filteredArr = tickets.filter((ticket) => {
@@ -29,7 +25,6 @@ app.get('/api/tickets', (req, res) => {
 app.post('/api/tickets/:ticketId/done', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);
-  console.log('found the request');
   let found = false;
   tickets.forEach((ticket, i) => {
     if (ticket.id === req.params.ticketId) {
