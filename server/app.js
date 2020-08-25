@@ -6,6 +6,8 @@ const filePath = process.env.ZACH_STORAGE || 'data.json';
 
 const fs = require('fs');
 
+app.use(express.static('../client/build'));
+
 app.get('/api/tickets', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);

@@ -7,24 +7,43 @@ function Ticket(props) {
   const {
     content, title, userEmail, labels, creationTime, id, hidden,
   } = props.ticket;
+
+
   const smallerContentFunc = () => {
     const myString = content;
     let smaller = '';
-    if (myString.length > 420) {
+    let strArr = myString.split('\n');
+
+    if(strArr.length > 6){
+      let newArr=[];
+      for( let i = 0; i<6; i++){
+        newArr.push(strArr[i]);
+      }
+      return newArr;
+    }
+    else if (myString.length > 420) {
       for (let i = 0; i < 420; i++) {
         smaller += myString[i];
       }
-      return smaller;
+      return smaller.split('\n');
     }
-    return myString;
+    return myString.split('\n');
   };
+
+
+
   const smallerContent = smallerContentFunc();
+  //let arr = str.split('\n');
+  let str = content;
+  let arr2 = str.split('\n');
+
   const [contentToDisplay, setContent] = useState(smallerContent);
+
   function showMoreOrLess() {
-    if (contentToDisplay.length > 420) {
+    if (contentToDisplay.length === arr2.length) {
       setContent(smallerContent);
     } else {
-      setContent(content);
+      setContent(arr2);
     }
   }
   useEffect(() => {
@@ -40,7 +59,6 @@ function Ticket(props) {
     return (`${year} , ${day}`);
   }
   subject += title;
-
   return (
     hidden ? <div />
       : (
@@ -48,10 +66,10 @@ function Ticket(props) {
           <div className="hideTicketButton" onClick={() => { props.hideItem(id); }}>hide</div>
           <div className="ticketTitle">{title}</div>
           <div className="ticketContent">
-            {contentToDisplay}
+            {contentToDisplay.map(line=> <div>{line}</div>)}
             {
             // eslint-disable-next-line no-nested-ternary
-            (content.length > 420)
+            (content.length > 420 || arr2.length > 6)
               ? (contentToDisplay.length < 421)
                 ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
                 : <div onClick={() => { showMoreOrLess(); }} className="viewMore">see less</div>

@@ -29,9 +29,9 @@ function App() {
   }
 
   function filterTickets(textVal) {
-    // if (hiddenCounter > 0) {
-    //   revealHidden();
-    // }
+    if (hiddenCounter > 0) {
+      revealHidden();
+    }
     axios.get(`/api/tickets?searchText=${textVal}`)
       .then((response) => setTicketArr(response.data));
   }
@@ -46,7 +46,6 @@ function App() {
       }
     });
   }
-
   return (
     <div className="myApp">
       <Header />

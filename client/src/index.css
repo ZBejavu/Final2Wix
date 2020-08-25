@@ -84,7 +84,9 @@ body {
   box-shadow: 0 0 2.5px #000;
   
 }
-.hideTicketButton:hover{
+
+
+.ticket:hover .hideTicketButton{
   cursor:pointer;
   color: rgb(33, 119, 200);
   opacity: 1;
