@@ -1,9 +1,12 @@
 // import React, { useEffect, useState } from 'react';
 import React, { useState, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
+import InputLabel from '@material-ui/core/InputLabel';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 // import logo from './logo.svg';
 // import Ticket from './components/Ticket'
 import axios from 'axios';
@@ -15,16 +18,16 @@ import './App.css';
 function App() {
   const [TicketArr, setTicketArr] = useState([]);
   const [hiddenCounter, setHiddenCounter] = useState(0);
-  const [sortByTime, setSortByTime] = useState([[],0]);
+  const [sortByTime, setSortByTime] = useState([[],'default']);
   const [dateRange , setDateRange] = useState({from: (new Date(2017,11,1)).getTime(), to: Date.now()});
   useEffect(() => {
-    axios.get('/api/tickets').then((response) => {setSortByTime([response.data,0]); setTicketArr(response.data);});
+    axios.get('/api/tickets').then((response) => {setSortByTime([response.data,'default']); setTicketArr(response.data);});
   }, []);
 
 
   useEffect(() => {
     const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-    setSortByTime([newArr,0]);
+    oldOrNew(sortByTime[1].toString());
     console.log(dateRange);
   }, [dateRange])
 
@@ -32,7 +35,7 @@ function App() {
   useEffect(() => {
     //setSortByTime([TicketArr,0]);
       const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-      setSortByTime([newArr,0]);
+      oldOrNew(sortByTime[1].toString());
     console.log(dateRange);
   },[TicketArr]);
 
@@ -67,7 +70,7 @@ function App() {
       revealHidden();
     }
     axios.get(`/api/tickets?searchText=${textVal}`)
-      .then((response) => { setSortByTime([response.data,0]); setTicketArr(response.data)});
+      .then((response) => {  oldOrNew(sortByTime[1].toString(),response.data); setTicketArr(response.data)});
   }
 
   function hideItem(id) {
@@ -85,19 +88,23 @@ function App() {
   
   
   
-  function oldOrNew(){
+  function oldOrNew(val,arr){
     console.log('in function');
-    const arrCopy = TicketArr.slice();
-    if(sortByTime[1] ===0){
-      const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
+    const arrCopy = arr || TicketArr.slice();
+    console.log(val === 0 , val)
+    if(val === "0"){
+      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
       newArr.sort((a,b)=> a.creationTime - b.creationTime);
-      setSortByTime([newArr,1]);
-    }else{
-      const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
+      setSortByTime([newArr,'0']);
+    }else if(val ==="1"){
+      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
       newArr.sort((a,b)=> b.creationTime - a.creationTime);
-      setSortByTime([newArr,0]);
+      setSortByTime([newArr, '1']);
+    }else{
+      setSortByTime([arrCopy,'default']);
     }
   }
+  const date = new Date();
 
   console.log(sortByTime[1])
   return (
@@ -113,6 +120,7 @@ function App() {
         onChange={(e) => filterTickets(e.target.value)}
       />
                 <TextField
+                style={{marginTop:'1.5vh'}}
         id="dateEnd"
         label="FROM"
         onChange={(e) => {let date = new Date(e.target.value);
@@ -127,6 +135,7 @@ function App() {
         }}
       />
           <TextField
+          style={{marginTop:'1vh'}}
         id="dateStart"
         label="UNTIL"
         onChange={(e) => {let date = new Date(e.target.value);
@@ -134,13 +143,25 @@ function App() {
           console.log(new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime())
           setDateRange({to : new Date( date.getFullYear(), date.getMonth(), date.getDate()+1,).getTime(), from: dateRange.from})}}
         type="date"
-        defaultValue={Date.now()}
+        defaultValue="2019-01-01"
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
         }}
       />
-      <Button onClick={()=> oldOrNew()} variant="contained">{sortByTime[1] === 0 ? 'old to new' : 'new to old'}</Button><Button onClick={() => setSortByTime([TicketArr,0])}>Default</Button>
+      <InputLabel style={{marginTop:'1vh'}} htmlFor="age-native-helper">Sort By:</InputLabel>
+      <NativeSelect
+          name='Sort By:'
+          onChange={(e) =>{console.log(e.target.value);if(e.target.value === "3"){setSortByTime([TicketArr,0])}else{oldOrNew(e.target.value)}}}
+          inputProps={{
+            name: 'age',
+            id: 'age-native-helper',
+          }}
+        >
+          <option value={'default'}>Default</option>
+          <option value={1}>New to old</option>
+          <option value={0}>Old to new</option>
+        </NativeSelect>
       <div className="ticketContainer">
         <div className="showingResults">
           <div>
