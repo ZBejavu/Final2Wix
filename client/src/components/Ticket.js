@@ -14,9 +14,9 @@ function Ticket(props) {
     let smaller = '';
     let strArr = myString.split('\n');
 
-    if(strArr.length > 6){
+    if(strArr.length > 4){
       let newArr=[];
-      for( let i = 0; i<6; i++){
+      for( let i = 0; i<4; i++){
         newArr.push(strArr[i]);
       }
       return newArr;
@@ -69,8 +69,8 @@ function Ticket(props) {
             {contentToDisplay.map(line=> <div>{line}</div>)}
             {
             // eslint-disable-next-line no-nested-ternary
-            (content.length > 420 || arr2.length > 6)
-              ? (contentToDisplay.length < 421)
+            (content.length > 420 || arr2.length > 4)
+              ? (contentToDisplay.length < 5)
                 ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
                 : <div onClick={() => { showMoreOrLess(); }} className="viewMore">see less</div>
               : <div />
