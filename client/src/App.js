@@ -20,6 +20,8 @@ function App() {
   const [hiddenCounter, setHiddenCounter] = useState(0);
   const [sortByTime, setSortByTime] = useState([[],'default']);
   const [dateRange , setDateRange] = useState({from: (new Date(2017,11,1)).getTime(), to: Date.now()});
+
+  
   useEffect(() => {
     axios.get('/api/tickets').then((response) => {setSortByTime([response.data,'default']); setTicketArr(response.data);});
   }, []);
@@ -84,13 +86,14 @@ function App() {
     });
   }
   
-
+  const filteredList = TicketArr.filter(ticket=> !ticket.hidden);
   
   
   
   function oldOrNew(val,arr){
     console.log('in function');
-    const arrCopy = arr || TicketArr.slice();
+
+    const arrCopy = arr? arr.slice() : TicketArr.slice();
     console.log(val === 0 , val)
     if(val === "0"){
       const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
@@ -101,7 +104,8 @@ function App() {
       newArr.sort((a,b)=> b.creationTime - a.creationTime);
       setSortByTime([newArr, '1']);
     }else{
-      setSortByTime([arrCopy,'default']);
+      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
+      setSortByTime([newArr,'default']);
     }
   }
   const date = new Date();

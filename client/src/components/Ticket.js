@@ -10,18 +10,19 @@ function Ticket(props) {
 
 
   const smallerContentFunc = () => {
-    const myString = content;
+    const myString = content.replace('\n\n','\n');
     let smaller = '';
-    let strArr = myString.split('\n');
-
-    if(strArr.length > 4){
-      let newArr=[];
-      for( let i = 0; i<4; i++){
-        newArr.push(strArr[i]);
+    if(myString.indexOf('\n') != -1){
+      let strArr = myString.split('\n');
+      if(strArr.length > 4){
+        let newArr=[];
+        for( let i = 0; i<4; i++){
+          newArr.push(strArr[i]);
+        }
+        return newArr;
       }
-      return newArr;
     }
-    else if (myString.length > 420) {
+    if (myString.length > 420) {
       for (let i = 0; i < 420; i++) {
         smaller += myString[i];
       }
@@ -69,7 +70,7 @@ function Ticket(props) {
             {contentToDisplay.map(line=> <div>{line}</div>)}
             {
             // eslint-disable-next-line no-nested-ternary
-            (content.length > 420 || arr2.length > 4)
+            (content.length > 420 || (arr2.length > 4 && arr2[4] != ''))
               ? (contentToDisplay.length < 5)
                 ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
                 : <div onClick={() => { showMoreOrLess(); }} className="viewMore">see less</div>
