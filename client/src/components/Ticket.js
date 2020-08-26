@@ -62,7 +62,7 @@ function Ticket(props) {
 
   return (
     <div
-      id={id}
+      id={`${id}`}
       className="ticket"
       style={props.ticket.done ? { backgroundColor: 'rgb(168, 60, 60)' }
         : props.ticket.employe ? { backgroundColor: 'rgb(132, 209, 164)' } : { backgroundColor: 'rgb(180, 199, 216)' }}

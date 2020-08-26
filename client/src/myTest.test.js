@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 //const nock = require('nock');
 //const request = require('supertest');
 const app = require('../../server/app');
+//const axios = require('axios');
 const { ExpansionPanelActions } = require('@material-ui/core');
 jest.setTimeout(30000);
 test('handlingTicket', async () => {
@@ -31,9 +32,14 @@ test('handlingTicket', async () => {
     //   expect(body.updated).toBe(true);
     await (await page.$('#switchLists')).click();
     await (new Promise((resolve) => setTimeout(resolve, 1000)));
-    const ticketTOfind = await page.$(`#${myTicketId}`);
-    const employeId = await ticketTOfind.$eval('#myEmploye', e => e.innerText);
+    await page.waitForSelector(`#${myTicketId}`, {visible: true});
+    const ticketTofind = await page.$(`#${myTicketId}`);
+    const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
     console.log('foundemploye', employeId);
     expect(employeId).toBe(myEmployeeId);
-    browser.close();
+    await (await ticketTofind.$('#openTicketModal')).click()
+    await page.type('#requiredId', myEmployeeId);
+    await page.type('#additionalInfoField', myDescription);
+    await (await page.$('#confirmButton')).click();
+    // browser.close();
 })

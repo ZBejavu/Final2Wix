@@ -8,7 +8,11 @@
     "labels": [
       "Corvid",
       "Api"
-    ]
+    ],
+    "done": true,
+    "employe": "Zach123",
+    "reason": "Handled the Problem",
+    "additional": "testing my Feature"
   },
   {
     "id": "36043e94-6d21-5d2a-b1eb-f983996e3d79",
@@ -19,7 +23,11 @@
     "labels": [
       "Corvid",
       "Guidelines"
-    ]
+    ],
+    "done": true,
+    "employe": "Zach123",
+    "reason": "Handled the Problem",
+    "additional": "testing my Feature"
   },
   {
     "id": "ab6fc754-0e01-5cfb-84b9-cf37c1c0cdb5",
@@ -30,7 +38,10 @@
       "Collapse",
       "Expand"
     ],
-    "creationTime": 1517833093439
+    "creationTime": 1517833093439,
+    "done": false,
+    "employe": "Zach123",
+    "additional": "testing my Feature"
   },
   {
     "id": "82150d9f-f12c-5545-8329-6eaa80cb9ebd",
