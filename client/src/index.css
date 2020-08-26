@@ -1,9 +1,7 @@
 body {
   margin: 0;
   background-color: rgb(196, 208, 216);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto' , 'sans-sherif';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -62,7 +60,8 @@ body {
   display: flex;
   font-size: 1.2rem;
   font-weight: bold;
-  align-items: flex-start;
+  justify-content: space-between;
+
 }
 #restoreHideTickets:hover{
   cursor: pointer;
@@ -82,7 +81,6 @@ body {
   cursor: default;
   transform:scale(1);
   box-shadow: 0 0 2.5px #000;
-  
 }
 
 
@@ -91,6 +89,7 @@ body {
   color: rgb(33, 119, 200);
   opacity: 1;
 }
+
 .hideTicketButton{
   opacity: 0;
   transition: all 0.2s;
@@ -117,7 +116,50 @@ body {
   background-color: lightblue;
   height: 12vh;
 }
-
+.red{
+  color:rgb(126, 33, 33);
+  color:rgb(236, 221, 84);
+}
+.reverseDate{
+  color:rgb(79, 79, 230);
+  cursor: pointer;
+}
+.paper{
+  position: 'absolute';
+  margin: auto;
+  margin-top : 20vh;
+  width:fit-content;
+  height: fit-content;
+  background-color: rgb(179, 179, 218);
+  border: 2px solid #000;
+  box-shadow: rgb(75, 73, 71);
+  padding: 15px;
+  padding-top: 5px;
+}
+.closeModal:hover {
+  cursor: pointer;
+  transform:scale(1.2);
+}
+.closeModal{
+  transition-duration: 0.15s;
+  float:right;
+  font-size: 130%;
+  color:rgb(172, 33, 33);
+  font-weight: 600;
+}
+.employeId{
+  display: flex;
+  width:fit-content;
+  font-size: 2vh;
+  align-items: flex-end;
+  justify-content: start;
+  font-weight: 600;
+}
+.paper h2{
+  width: 90%;
+  text-align:center;
+  align-self: center;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

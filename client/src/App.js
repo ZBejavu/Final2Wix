@@ -1,45 +1,79 @@
-// import React, { useEffect, useState } from 'react';
 import React, { useState, useEffect } from 'react';
-import Modal from '@material-ui/core/Modal';
 import InputLabel from '@material-ui/core/InputLabel';
 import { TextField } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
-// import logo from './logo.svg';
-// import Ticket from './components/Ticket'
 import axios from 'axios';
 import Ticket from './components/Ticket';
 import Header from './components/Header';
-
 import './App.css';
 
 function App() {
   const [TicketArr, setTicketArr] = useState([]);
-  const [hiddenCounter, setHiddenCounter] = useState(0);
-  const [sortByTime, setSortByTime] = useState([[],'default']);
-  const [dateRange , setDateRange] = useState({from: (new Date(2017,11,1)).getTime(), to: Date.now()});
+  const [sortByTime, setSortByTime] = useState([[], 'default']);
+  const [dateRange, setDateRange] = useState(
+    {
+      from: (new Date(2017, 11, 1)).getTime(),
+      to: Date.now(),
+    },
+  );
+  const [showFinished, setShowFinished] = useState(false);
+  const filteredCompletely = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
+  const ticketsThatAreDone = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
+  const hiddenCounter1 = sortByTime[0].length - (filteredCompletely.length + ticketsThatAreDone.length);
 
-  
+  function oldOrNew(val, arr) {
+    const arrCopy = arr ? arr.slice() : TicketArr.slice();
+    const newArr = arrCopy.filter((ticket) => ticket.creationTime < dateRange.to && ticket.creationTime > dateRange.from);
+    if (val === '0') {
+      newArr.sort((a, b) => a.creationTime - b.creationTime);
+      setSortByTime([newArr, '0']);
+    } else if (val === '1') {
+      newArr.sort((a, b) => b.creationTime - a.creationTime);
+      setSortByTime([newArr, '1']);
+    } else {
+      setSortByTime([newArr, 'default']);
+    }
+  }
+
   useEffect(() => {
-    axios.get('/api/tickets').then((response) => {setSortByTime([response.data,'default']); setTicketArr(response.data);});
+    axios.get('/api/tickets').then((response) => { setSortByTime([response.data, 'default']); setTicketArr(response.data); });
   }, []);
 
-
   useEffect(() => {
-    const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
     oldOrNew(sortByTime[1].toString());
-    console.log(dateRange);
-  }, [dateRange])
+  }, [dateRange, TicketArr]);
 
+  function hideItem(id) {
+    const newArr = TicketArr.slice();
+    newArr.forEach((ticket, i) => {
+      if (ticket.id === id) {
+        newArr[i].hidden = true;
+        setTicketArr(newArr);
+      }
+    });
+  }
 
-  useEffect(() => {
-    //setSortByTime([TicketArr,0]);
-      const newArr = TicketArr.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-      oldOrNew(sortByTime[1].toString());
-    console.log(dateRange);
-  },[TicketArr]);
+  function revealHidden() {
+    const newArr = TicketArr.slice();
+    newArr.forEach((ticket, i) => {
+      if (ticket.hidden) {
+        delete newArr[i].hidden;
+      }
+    });
+    setTicketArr(newArr);
+  }
+
+  function filterTickets(textVal) {
+    if (hiddenCounter1 > 0) {
+      revealHidden();
+    }
+    axios.get(`/api/tickets?searchText=${textVal}`)
+      .then((response) => {
+        oldOrNew(sortByTime[1].toString(), response.data);
+        setTicketArr(response.data);
+      });
+  }
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -52,65 +86,9 @@ function App() {
       width: 200,
     },
   }));
-    const classes = useStyles();
+  const classes = useStyles();
 
-
-
-  function revealHidden() {
-    const newArr = TicketArr.slice();
-    newArr.forEach((ticket, i) => {
-      if (ticket.hasOwnProperty('hidden')) {
-        delete newArr[i].hidden;
-      }
-    });
-    setHiddenCounter(0);
-    setTicketArr(newArr);
-  }
-
-  function filterTickets(textVal) {
-    if (hiddenCounter > 0) {
-      revealHidden();
-    }
-    axios.get(`/api/tickets?searchText=${textVal}`)
-      .then((response) => {  oldOrNew(sortByTime[1].toString(),response.data); setTicketArr(response.data)});
-  }
-
-  function hideItem(id) {
-    const newArr = TicketArr.slice();
-    newArr.forEach((ticket, i) => {
-      if (ticket.id === id) {
-        newArr[i].hidden = true;
-        setTicketArr(newArr);
-        setHiddenCounter(hiddenCounter + 1);
-      }
-    });
-  }
-  
-  const filteredList = TicketArr.filter(ticket=> !ticket.hidden);
-  
-  
-  
-  function oldOrNew(val,arr){
-    console.log('in function');
-
-    const arrCopy = arr? arr.slice() : TicketArr.slice();
-    console.log(val === 0 , val)
-    if(val === "0"){
-      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-      newArr.sort((a,b)=> a.creationTime - b.creationTime);
-      setSortByTime([newArr,'0']);
-    }else if(val ==="1"){
-      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-      newArr.sort((a,b)=> b.creationTime - a.creationTime);
-      setSortByTime([newArr, '1']);
-    }else{
-      const newArr = arrCopy.filter(ticket => {return ticket.creationTime< dateRange.to && ticket.creationTime> dateRange.from})
-      setSortByTime([newArr,'default']);
-    }
-  }
-  const date = new Date();
-
-  console.log(sortByTime[1])
+  // const filteredList = TicketArr.filter(ticket=> !ticket.hidden);
   return (
     <div className="myApp">
       <Header />
@@ -120,17 +98,20 @@ function App() {
         style={{
           textColor: 'black', height: '5vh', marginTop: '2rem', width: '30vh',
         }}
-        placeholder="Filter Tickets"
+        placeholder="Filter Tickets by Title name"
         onChange={(e) => filterTickets(e.target.value)}
       />
-                <TextField
-                style={{marginTop:'1.5vh'}}
+      <TextField
+        style={{ marginTop: '1.5vh' }}
         id="dateEnd"
         label="FROM"
-        onChange={(e) => {let date = new Date(e.target.value);
-          console.log('firstDateTime', date.getTime());
-          console.log(new Date(2018 ,11,27,5,14,17).getTime());
-          setDateRange({from : new Date( date.getFullYear(), date.getMonth(), date.getDate(),).getTime(), to: dateRange.to})}}
+        onChange={(e) => {
+          const date = new Date(e.target.value);
+          setDateRange({
+            from: new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(), // more accurate than date.getTime()
+            to: dateRange.to,
+          });
+        }}
         type="date"
         defaultValue="2018-01-01"
         className={classes.textField}
@@ -138,14 +119,17 @@ function App() {
           shrink: true,
         }}
       />
-          <TextField
-          style={{marginTop:'1vh'}}
+      <TextField
+        style={{ marginTop: '1vh' }}
         id="dateStart"
         label="UNTIL"
-        onChange={(e) => {let date = new Date(e.target.value);
-          console.log('firstDateTime', date.getTime());
-          console.log(new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime())
-          setDateRange({to : new Date( date.getFullYear(), date.getMonth(), date.getDate()+1,).getTime(), from: dateRange.from})}}
+        onChange={(e) => {
+          const date = new Date(e.target.value);
+          setDateRange({
+            to: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1).getTime(), // more accurate than date.getTime()
+            from: dateRange.from,
+          });
+        }}
         type="date"
         defaultValue="2019-01-01"
         className={classes.textField}
@@ -153,46 +137,63 @@ function App() {
           shrink: true,
         }}
       />
-      <InputLabel style={{marginTop:'1vh'}} htmlFor="age-native-helper">Sort By:</InputLabel>
+      <span id="DateRangeTicketsCounter">
+        {`${TicketArr.length - sortByTime[0].length} Restricted by date`}
+        {' '}
+        <span className="reverseDate" onClick={() => setDateRange({ from: (new Date(2017, 11, 1)).getTime(), to: Date.now() })}>{(TicketArr.length - sortByTime[0].length > 0) ? '- reverse' : ''}</span>
+      </span>
+      <InputLabel style={{ marginTop: '1vh' }} htmlFor="age-native-helper">Sort By:</InputLabel>
       <NativeSelect
-          name='Sort By:'
-          onChange={(e) =>{console.log(e.target.value);if(e.target.value === "3"){setSortByTime([TicketArr,0])}else{oldOrNew(e.target.value)}}}
-          inputProps={{
-            name: 'age',
-            id: 'age-native-helper',
-          }}
-        >
-          <option value={'default'}>Default</option>
-          <option value={1}>New to old</option>
-          <option value={0}>Old to new</option>
-        </NativeSelect>
+        name="Sort By:"
+        onChange={(e) => {
+          if (e.target.value === '3') {
+            setSortByTime([TicketArr, 0]);
+          } else {
+            oldOrNew(e.target.value);
+          }
+        }}
+        inputProps={{
+          name: 'age',
+          id: 'age-native-helper',
+        }}
+      >
+        <option value="default">Default</option>
+        <option value={1}>New to old</option>
+        <option value={0}>Old to new</option>
+      </NativeSelect>
       <div className="ticketContainer">
         <div className="showingResults">
+
           <div>
             Showing
-            {TicketArr.length}
-            {' '}
-            Results
+            {!showFinished ? filteredCompletely.length : ticketsThatAreDone.length}
+            {!showFinished ? 'Active Tickets' : 'Handeled Tickets' }
           </div>
-          {
-            hiddenCounter > 0 ? (
-              <div style={{
-                color: 'grey', display: 'flex', alignItems: 'space-between', marginLeft: '1vh',
-              }}
-              >
-                (
-                <span id="hideTicketsCounter">{hiddenCounter}</span>
-                hidden tickets -
-                <div id="restoreHideTickets" onClick={() => revealHidden()}> restore</div>
-                )
-              </div>
-            ) : <div />
-          }
-
+          <div>
+            {
+              hiddenCounter1 > 0 ? (
+                <div style={{
+                  color: 'grey', display: 'flex', alignItems: 'space-between', marginLeft: '1vh',
+                }}
+                >
+                  (
+                  <span id="hideTicketsCounter">{hiddenCounter1}</span>
+                  hidden tickets -
+                  <div id="restoreHideTickets" onClick={() => revealHidden()}> restore</div>
+                  )
+                </div>
+              ) : <div />
+            }
+          </div>
+          <div style={{ cursor: 'pointer' }} onClick={() => { setShowFinished(!showFinished); }}>
+            {!showFinished ? 'Show Handled Tickets' : 'Show Active Tickets'}
+          </div>
         </div>
         {
-        sortByTime[0].map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} />)
-      }
+          !showFinished
+            ? filteredCompletely.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={filterTickets} />)
+            : ticketsThatAreDone.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={filterTickets} />)
+        }
       </div>
     </div>
   );

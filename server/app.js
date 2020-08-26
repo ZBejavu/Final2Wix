@@ -35,6 +35,9 @@ app.post('/api/tickets/:ticketId/done', (req, res) => {
       // console.log(tickets[i]);
       if (!prevState) {
         tickets[i].done = true;
+        tickets[i].employe = req.query.employe;
+        tickets[i].reason = req.query.reason;
+        tickets[i].additional = req.query.additional;
         const dataInJson = JSON.stringify(tickets, null, 2);
         fs.writeFile(filePath, dataInJson, (e) => {
           if (e) { console.log(e); }
@@ -64,6 +67,9 @@ app.post('/api/tickets/:ticketId/undone', (req, res) => {
         res.send({ updated: false });
       } else {
         tickets[i].done = false;
+        tickets[i].employe = req.query.employe;
+        tickets[i].additional = req.query.additional;
+        delete tickets[i].reason;
         const dataInJson = JSON.stringify(tickets, null, 2);
         fs.writeFile(filePath, dataInJson, (e) => {
           if (e) { console.log(e); }
