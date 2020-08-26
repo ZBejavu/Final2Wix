@@ -62,6 +62,7 @@ function Ticket(props) {
 
   return (
     <div
+      id={id}
       className="ticket"
       style={props.ticket.done ? { backgroundColor: 'rgb(168, 60, 60)' }
         : props.ticket.employe ? { backgroundColor: 'rgb(132, 209, 164)' } : { backgroundColor: 'rgb(180, 199, 216)' }}
@@ -100,7 +101,7 @@ function Ticket(props) {
       {props.ticket.employe && (
         <div>
           <b>{props.ticket.done ? 'Closed By : ' : 'Reopened by : '}</b>
-          {props.ticket.employe}
+          <span id='myEmploye'>{props.ticket.employe}</span>
         </div>
       )}
 
@@ -119,6 +120,7 @@ function Ticket(props) {
       )}
 
       <div
+        id ='openTicketModal'
         style={props.ticket.done ? { float: 'right', color: 'white', marginTop: '1vh' }
           : { float: 'right', color: 'rgb(126, 33, 33)', marginTop: '1vh' }}
         className="hideTicketButton"

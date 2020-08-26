@@ -46,7 +46,7 @@ function CloseModal(props) {
 
           <div style={{ display: 'flex' }}>
             <div className="employeId">Employee id: </div>
-            <TextField style={{ display: 'inline-block' }} label="Required" placeholder="enter name" onChange={(e) => { setEmployeId(e.target.value); }} />
+            <TextField id='requiredId' style={{ display: 'inline-block' }} label="Required" placeholder="enter name" onChange={(e) => { setEmployeId(e.target.value); }} />
           </div>
           {
             !props.ticketData.done && (
@@ -68,8 +68,8 @@ function CloseModal(props) {
             )
           }
           <div className="employeId" style={{ marginTop: '5%', width: '40%' }}>Additional information (optional)</div>
-          <TextField multiline style={{ width: '70%', height: '20%' }} label="..." placeholder="..." onChange={(e) => { setAddedInfo(e.target.value); }} />
-          <Button disabled={!employeId} onClick={() => { handlingTicketClosing(); }} id="modalbtn" variant="contained" color="">{props.ticketData.done ? 'Confirm ' : 'Submit Ticket'}</Button>
+          <TextField id='additionalInfoField' multiline style={{ width: '70%', height: '20%' }} label="..." placeholder="..." onChange={(e) => { setAddedInfo(e.target.value); }} />
+          <Button disabled={employeId? employeId.toString()>3: false} onClick={() => { handlingTicketClosing(); }} id="confirmButton" variant="contained" color="">{props.ticketData.done ? 'Confirm ' : 'Submit Ticket'}</Button>
         </div>
       </div>
     </Modal>

@@ -166,7 +166,7 @@ function App() {
 
           <div>
             Showing
-            {!showFinished ? filteredCompletely.length : ticketsThatAreDone.length}
+            <span id='ticketsYouSee'>{!showFinished ? filteredCompletely.length : ticketsThatAreDone.length}</span>
             {!showFinished ? 'Active Tickets' : 'Handeled Tickets' }
           </div>
           <div>
@@ -185,7 +185,7 @@ function App() {
               ) : <div />
             }
           </div>
-          <div style={{ cursor: 'pointer' }} onClick={() => { setShowFinished(!showFinished); }}>
+          <div id='switchLists' style={{ cursor: 'pointer' }} onClick={() => { setShowFinished(!showFinished); }}>
             {!showFinished ? 'Show Handled Tickets' : 'Show Active Tickets'}
           </div>
         </div>
