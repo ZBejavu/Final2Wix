@@ -11,11 +11,15 @@ test('handlingTicket', async () => {
     });
     let page = await browser.newPage();
     await page.goto('http://localhost:3000/');
+    await page.waitForSelector('#sorting', {visible: true});
+    await page.select('#sorting', '1')
+    // await (await page.$('#sorting')).click()
+    // await page.waitForSelector('#new', {visible: true});
+    // await (await page.$('#new')).click()
     await page.waitForSelector('#openTicketModal', {visible: true});
     const ActiveListBeforeDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     console.log(ActiveListBeforeDone);
     await (await page.$('#openTicketModal')).click()
-    
     await page.waitForSelector('#myModalVisible', {visible: true});
     const myTicketId = await page.$eval('.ticket', e => e.id)
     console.log('my ticket id:',myTicketId);

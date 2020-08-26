@@ -154,12 +154,12 @@ function App() {
         }}
         inputProps={{
           name: 'age',
-          id: 'age-native-helper',
+          id: 'sorting',
         }}
       >
         <option value="default">Default</option>
-        <option value={1}>New to old</option>
-        <option value={0}>Old to new</option>
+        <option id='new' value={1}>New to old</option>
+        <option id='old' value={0}>Old to new</option>
       </NativeSelect>
       <div className="ticketContainer">
         <div className="showingResults">

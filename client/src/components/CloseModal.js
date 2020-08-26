@@ -69,7 +69,7 @@ function CloseModal(props) {
           }
           <div className="employeId" style={{ marginTop: '5%', width: '40%' }}>Additional information (optional)</div>
           <TextField id='additionalInfoField' multiline style={{ width: '70%', height: '20%' }} label="..." placeholder="..." onChange={(e) => { setAddedInfo(e.target.value); }} />
-          <Button disabled={employeId? employeId.toString()>3: false} onClick={() => { handlingTicketClosing(); }} id="confirmButton" variant="contained" color="">{props.ticketData.done ? 'Confirm ' : 'Submit Ticket'}</Button>
+          <Button disabled={!employeId} onClick={() => { handlingTicketClosing(); }} id="confirmButton" variant="contained" color="">{props.ticketData.done ? 'Confirm ' : 'Submit Ticket'}</Button>
         </div>
       </div>
     </Modal>
