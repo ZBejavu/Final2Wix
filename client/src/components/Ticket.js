@@ -69,7 +69,7 @@ function Ticket(props) {
     >
 
       <div className="hideTicketButton" onClick={() => { props.hideItem(id); }}>hide</div>
-      <div className="ticketTitle">{title}</div>
+      <div id={title} className="ticketTitle">{title}</div>
 
       <div className="ticketContent">
         {contentToDisplay.map((line) => <div>{line}</div>)}
@@ -115,7 +115,7 @@ function Ticket(props) {
       {(props.ticket.additional && props.ticket.additional !== 'undefined') && (
         <div>
           <b>Added info :</b>
-          {props.ticket.additional}
+          <span id='additionalInfo'>{props.ticket.additional}</span>
         </div>
       )}
 

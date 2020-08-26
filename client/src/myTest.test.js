@@ -15,6 +15,7 @@ test('handlingTicket', async () => {
     const ActiveListBeforeDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     console.log(ActiveListBeforeDone);
     await (await page.$('#openTicketModal')).click()
+    
     await page.waitForSelector('#myModalVisible', {visible: true});
     const myTicketId = await page.$eval('.ticket', e => e.id)
     console.log('my ticket id:',myTicketId);
@@ -23,20 +24,17 @@ test('handlingTicket', async () => {
     await page.type('#requiredId', myEmployeeId);
     await page.type('#additionalInfoField', myDescription);
     await (await page.$('#confirmButton')).click();
-    await (new Promise((resolve) => setTimeout(resolve, 3000)));
+    await (new Promise((resolve) => setTimeout(resolve, 1500)));
     const ActiveListAfterDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     expect(ActiveListAfterDone).toBe((ActiveListBeforeDone-1).toString());
-    // const { body } = await request(app)
-    //   .post(`/api/tickets/${myTicketId}/undone}`)
-    //   .expect(200)
-    //   expect(body.updated).toBe(true);
     await (await page.$('#switchLists')).click();
     await (new Promise((resolve) => setTimeout(resolve, 1000)));
-    await page.waitForSelector(`#${myTicketId}`, {visible: true});
-    const ticketTofind = await page.$(`#${myTicketId}`);
+    await page.waitForSelector(`.ticket`, {visible: true});
+    const ticketTofind = await page.$(`.ticket`);
     const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
-    console.log('foundemploye', employeId);
+    const description = await ticketTofind.$eval('#additionalInfo', e => e.innerText);
     expect(employeId).toBe(myEmployeeId);
+    expect(description).toBe(myDescription);
     await (await ticketTofind.$('#openTicketModal')).click()
     await page.type('#requiredId', myEmployeeId);
     await page.type('#additionalInfoField', myDescription);
