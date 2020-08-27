@@ -108,7 +108,7 @@ function Ticket(props) {
       {props.ticket.reason && (
         <div>
           <b>{'Reason : '}</b>
-          {props.ticket.reason}
+          <span id='myReason'>{props.ticket.reason}</span>
         </div>
       )}
 
