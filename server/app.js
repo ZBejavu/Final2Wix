@@ -66,7 +66,7 @@ app.post('/api/tickets/:ticketId/undone', (req, res) => {
       if (!prevState) {
         res.send({ updated: false });
       } else {
-        tickets[i].done = false;
+        delete tickets[i].done;
         tickets[i].employe = req.query.employe;
         tickets[i].additional = req.query.additional;
         delete tickets[i].reason;
