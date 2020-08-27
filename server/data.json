@@ -850,10 +850,7 @@
     "title": "Trouble adding LinkedIn Company Follow Button",
     "content": "I'm having trouble adding a LinkedIn Company Follow button.  I went to this LinkedIn page where it generates code for you to add this button to your site: https://developer.linkedin.com/plugins/follow-company\n\nThis is the code they gave me:\n\n<script src=\"//platform.linkedin.com/in.js\" type=\"text/javascript\"> lang: en_US</script>\n<script type=\"IN/FollowCompany\" data-id=\"27193937\"></script>\n\nBut I can't seem to add it to my Wix site.\n\nPlease help.\n\nThanks!\n\n-Noah",
     "userEmail": "nimwa@ogela.dm",
-    "creationTime": 1546281365946,
-    "done": false,
-    "employe": "Zach123",
-    "additional": "testing my Feature"
+    "creationTime": 1546281365946
   },
   {
     "id": "1e0205cc-e243-5f0c-95f9-b679c962bd7c",
