@@ -38,7 +38,8 @@ The Express app should be located in the path `server/app.js` and export the `ap
 PS: feel free to add more label strings to the data (`data.json`) if you need.
 - The app should have input with id `searchInput`. This input should request the server on `onChange` with relevant `searchText` param and update the list accordingly
 - Add a hide button with className `hideTicketButton` that will hide the tickets from view. Add a counter of number of hiding tickets, this counter should have a `hideTicketsCounter` className.
-- Add a button to restore the hidden ticket list on click with the id `restoreHideTickets` ![hide](./readme-files/hideit.gif)
+- Add a button to restore the hidden ticket list on click with the id `restoreHideTickets`
+![alt text](./readme-files/ui-testing-recording.gif)
 
 ## Before Submitting Requirements
 - Use [ESLINT](https://eslint.org/docs/user-guide/getting-started) - run `npx eslint --init` in the backend folder & in the client.
