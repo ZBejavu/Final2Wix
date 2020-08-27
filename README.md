@@ -47,6 +47,12 @@ Use a popular style guide - Airbnb
 
 - Deploy your app with [Glitch](https://glitch.com/?utm_medium=weblink&utm_source=dev.to&utm_campaign=blog&utm_content=dev) with [this](https://dev.to/glitch/create-react-app-and-express-together-on-glitch-28gi) tutorial
 
+
+## Glitch URL:
+(https://assorted-alpine-mayonnaise.glitch.me/)
+## My Own Gif:
+![alt text](./readme-files/mygiforCourse.gif)
+
 ## Bonus
 1. New feature - add any cool functionality you want to the app
 2. Testing that feature - add a test to that new feature
