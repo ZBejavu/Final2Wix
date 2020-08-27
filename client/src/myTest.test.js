@@ -31,9 +31,7 @@ const mockData1 = [
 
 jest.setTimeout(30000);
 test('handlingTicket', async () => {
-    let browser = await puppeteer.launch({
-        headless: false
-    });
+    let browser = await puppeteer.launch();
     let page = await browser.newPage();
     useNock(page, ['http://localhost:3000/api']);
     
