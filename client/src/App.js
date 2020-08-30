@@ -65,13 +65,13 @@ function App() {
   }
 
   function revealHidden() {
-    const newArr = TicketArr.slice();
+    const newArr = sortByTime[0].slice();
     newArr.forEach((ticket, i) => {
       if (ticket.hidden) {
         delete newArr[i].hidden;
       }
     });
-    setTicketArr(newArr);
+    setSortByTime([newArr, sortByTime[1]]);
   }
 
   function filterTickets(textVal) {
