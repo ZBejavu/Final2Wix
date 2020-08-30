@@ -18,8 +18,18 @@ function App() {
     },
   );
   const [showFinished, setShowFinished] = useState(false);
-  const filteredCompletely = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
-  const ticketsThatAreDone = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
+  // const filteredCompletely = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
+  // const ticketsThatAreDone = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
+  let filteredCompletely =[], ticketsThatAreDone = [];
+  sortByTime[0].forEach(ticket => {
+    if(!ticket.hidden){
+      if(ticket.done){
+        ticketsThatAreDone.push(ticket);
+      }else{
+        filteredCompletely.push(ticket);
+      }
+    }
+  })
   const hiddenCounter1 = sortByTime[0].length - (filteredCompletely.length + ticketsThatAreDone.length);
 
   function oldOrNew(val, arr) {
@@ -45,11 +55,11 @@ function App() {
   }, [dateRange, TicketArr]);
 
   function hideItem(id) {
-    const newArr = TicketArr.slice();
+    const newArr = sortByTime[0].slice();
     newArr.forEach((ticket, i) => {
       if (ticket.id === id) {
         newArr[i].hidden = true;
-        setTicketArr(newArr);
+        setSortByTime([newArr, sortByTime[1]]);
       }
     });
   }
