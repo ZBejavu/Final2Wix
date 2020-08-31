@@ -18,19 +18,22 @@ function App() {
     },
   );
   const [showFinished, setShowFinished] = useState(false);
-  // const filteredCompletely = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
-  // const ticketsThatAreDone = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
-  let filteredCompletely =[], ticketsThatAreDone = [];
+  // const ActiveTickets = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
+  // const HandeledTickets = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
+  let ActiveTickets =[], HandeledTickets = [],hiddenCounter1=0 , hiddenCounter2 =0;
   sortByTime[0].forEach(ticket => {
-    if(!ticket.hidden){
-      if(ticket.done){
-        ticketsThatAreDone.push(ticket);
-      }else{
-        filteredCompletely.push(ticket);
-      }
+    if(ticket.hidden && !ticket.done){
+      hiddenCounter1++;
+    }else if(ticket.hidden && ticket.done){
+      hiddenCounter2++;
     }
+      if(ticket.done){
+        HandeledTickets.push(ticket);
+      }else{
+        ActiveTickets.push(ticket);
+      }
   })
-  const hiddenCounter1 = sortByTime[0].length - (filteredCompletely.length + ticketsThatAreDone.length);
+  //const hiddenCounter1 = sortByTime[0].length - (ActiveTickets.length + HandeledTickets.length);
 
   function oldOrNew(val, arr) {
     const arrCopy = arr ? arr.slice() : TicketArr.slice();
@@ -77,15 +80,21 @@ function App() {
   function revealHidden() {
     const newArr = sortByTime[0].slice();
     newArr.forEach((ticket, i) => {
-      if (ticket.hidden) {
-        delete newArr[i].hidden;
+      if(showFinished){
+        if (ticket.hidden && ticket.done) {
+          delete newArr[i].hidden;
+        }
+      }else{
+        if (ticket.hidden && !ticket.done) {
+          delete newArr[i].hidden;
+        }
       }
     });
     setSortByTime([newArr, sortByTime[1]]);
   }
 
   function filterTickets(textVal) {
-    if (hiddenCounter1 > 0) {
+    if (hiddenCounter2 > 0 || hiddenCounter1>0) {
       revealHidden();
     }
     axios.get(`/api/tickets?searchText=${textVal}`)
@@ -107,7 +116,7 @@ function App() {
     },
   }));
   const classes = useStyles();
-
+  let myCounter = !showFinished? hiddenCounter1 : hiddenCounter2;
   // const filteredList = TicketArr.filter(ticket=> !ticket.hidden);
   return (
     <div className="myApp">
@@ -186,18 +195,18 @@ function App() {
 
           <div>
             Showing
-            <span id='ticketsYouSee'>{!showFinished ? filteredCompletely.length : ticketsThatAreDone.length}</span>
+            <span id='ticketsYouSee'>{!showFinished ? ActiveTickets.length -myCounter : HandeledTickets.length - myCounter}</span>
             {!showFinished ? 'Active Tickets' : 'Handeled Tickets' }
           </div>
           <div>
             {
-              hiddenCounter1 > 0 ? (
+              myCounter > 0 ? (
                 <div style={{
                   color: 'grey', display: 'flex', alignItems: 'space-between', marginLeft: '1vh',
                 }}
                 >
                   (
-                  <span id="hideTicketsCounter">{hiddenCounter1}</span>
+                  <span id="hideTicketsCounter">{myCounter}</span>
                   hidden tickets -
                   <div id="restoreHideTickets" onClick={() => revealHidden()}> restore</div>
                   )
@@ -211,8 +220,8 @@ function App() {
         </div>
         {
           !showFinished
-            ? filteredCompletely.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} />)
-            : ticketsThatAreDone.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} />)
+            ? sortByTime[0].map((ticket) => !ticket.done && !ticket.hidden ? <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} /> : <div />)
+            : sortByTime[0].map((ticket) => ticket.done && !ticket.hidden ? <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} /> : <div />)
         }
       </div>
     </div>

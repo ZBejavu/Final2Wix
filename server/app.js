@@ -58,7 +58,7 @@ app.post('/api/tickets/:ticketId/undone', (req, res) => {
   const data = fs.readFileSync(filePath);
   const tickets = JSON.parse(data);
   let found = false;
-  tickets.forEach(async (ticket, i) => {
+  tickets.forEach((ticket, i) => {
     if (ticket.id === req.params.ticketId) {
       const prevState = tickets[i].done;
       found = true;
