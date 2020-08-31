@@ -64,6 +64,16 @@ function App() {
     });
   }
 
+    function finishLocaly(id, bool){
+      let newArr = sortByTime[0].slice();
+      newArr.forEach((ticket,i) => { 
+        if(ticket.id === id){
+          newArr[i].done = bool;
+          setSortByTime([newArr,sortByTime[1]]);
+        }
+      })
+  }
+
   function revealHidden() {
     const newArr = sortByTime[0].slice();
     newArr.forEach((ticket, i) => {
@@ -201,8 +211,8 @@ function App() {
         </div>
         {
           !showFinished
-            ? filteredCompletely.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={filterTickets} />)
-            : ticketsThatAreDone.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={filterTickets} />)
+            ? filteredCompletely.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} />)
+            : ticketsThatAreDone.map((ticket) => <Ticket ticket={ticket} hideItem={hideItem} refreshList={finishLocaly} />)
         }
       </div>
     </div>
