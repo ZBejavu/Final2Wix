@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import logo from './logo.svg';
-// import Ticket from './components/Ticket'
 import Button from '@material-ui/core/Button';
 import CloseModal from './CloseModal';
 
@@ -9,32 +7,7 @@ function Ticket(props) {
     content, title, userEmail, labels, creationTime, id,
   } = props.ticket;
   const [closingTicket, setClosingTicket] = useState(false);
-
-  const smallerContentFunc = () => {
-    const temp = content.replace('\n\n', '\n');
-    const myString = temp.replace('\n \n', '\n');
-    let smaller = '';
-    if (myString.indexOf('\n') !== -1) {
-      const strArr = myString.split('\n');
-      if (strArr.length > 4) {
-        const newArr = [];
-        for (let i = 0; i < 4; i++) {
-          newArr.push(strArr[i]);
-        }
-        return newArr;
-      }
-    }
-    if (myString.length > 420) {
-      for (let i = 0; i < 420; i++) {
-        smaller += myString[i];
-      }
-      return smaller.split('\n');
-    }
-    return myString.split('\n');
-  };
-
-  const smallerContent = smallerContentFunc();
-  // let arr = str.split('\n');
+  const smallerContent = content.length>420? content.slice(0,420) : content.slice();
   const str = content;
   const arr2 = str.split('\n');
 
@@ -55,7 +28,6 @@ function Ticket(props) {
   function buildingDate() {
     const newDate = new Date(creationTime);
     const year = `${(newDate.getMonth() === 12) ? 1 : newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`;
-    // const day = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
     const day = newDate.toLocaleTimeString();
     return (`${year} , ${day}`);
   }
@@ -72,11 +44,11 @@ function Ticket(props) {
       <div id={title} className="ticketTitle">{title}</div>
 
       <div className="ticketContent">
-        {contentToDisplay.map((line) => <div>{line}</div>)}
+        {typeof contentToDisplay === 'string' ?contentToDisplay : contentToDisplay.map((line) => <div>{line}</div>)}
         {
           // eslint-disable-next-line no-nested-ternary
-          (content.length > 420 || (arr2.length > 4 && ((arr2[4] !== '' && arr2[4] !== ' ') || (arr2[5] !== '' && arr2[5] !== ' '))))
-            ? (contentToDisplay.length < 5) ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
+          (content.length > 420)
+            ? (typeof contentToDisplay === 'string') ? <div onClick={() => { showMoreOrLess(); }} className="viewMore">see more</div>
               : <div onClick={() => { showMoreOrLess(); }} className="viewMore">see less</div>
             : <div />
         }
