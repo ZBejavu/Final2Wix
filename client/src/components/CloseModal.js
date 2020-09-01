@@ -17,10 +17,10 @@ function CloseModal(props) {
   function handlingTicketClosing() {
     if (!props.ticketData.done) {
       axios.post(`/api/tickets/${props.ticketData.id}/done?employe=${employeId}&reason=${closeReason}&additional=${addedInfo}`)
-        .then(() => { props.settingState(false); props.refreshList(props.ticketData.id, true); });
+        .then(() => { props.settingState(false); props.refreshList(props.ticketData.id, true , employeId, closeReason ,addedInfo); });
     } else {
       axios.post(`/api/tickets/${props.ticketData.id}/undone?employe=${employeId}&additional=${addedInfo}`)
-        .then(() => { props.settingState(false); props.refreshList(props.ticketData.id, false); });
+        .then(() => { props.settingState(false); props.refreshList(props.ticketData.id, false , employeId, undefined ,addedInfo); });
     }
   }
 

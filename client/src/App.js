@@ -17,9 +17,7 @@ function App() {
       to: Date.now(),
     },
   );
-  const [showFinished, setShowFinished] = useState(false);
-  // const ActiveTickets = sortByTime[0].filter((ticket) => !ticket.done && !ticket.hidden);
-  // const HandeledTickets = sortByTime[0].filter((ticket) => ticket.done && !ticket.hidden);
+  const [showFinished, setShowFinished] = useState(undefined);
   let ActiveTickets =[], HandeledTickets = [],hiddenCounter1=0 , hiddenCounter2 =0;
   sortByTime[0].forEach(ticket => {
     if(ticket.hidden && !ticket.done){
@@ -33,7 +31,10 @@ function App() {
         ActiveTickets.push(ticket);
       }
   })
-  //const hiddenCounter1 = sortByTime[0].length - (ActiveTickets.length + HandeledTickets.length);
+
+  const myCounter = !showFinished? hiddenCounter1 : hiddenCounter2;
+
+
 
   function oldOrNew(val, arr) {
     const arrCopy = arr ? arr.slice() : TicketArr.slice();
@@ -58,37 +59,55 @@ function App() {
   }, [dateRange, TicketArr]);
 
   function hideItem(id) {
+
+    // newArr.forEach((ticket, i) => {
+    //   if (ticket.id === id) {
+    //     newArr[i].hidden = true;
+    //     setSortByTime([newArr, sortByTime[1]]);
+    //   }
+    // });
     const newArr = sortByTime[0].slice();
-    newArr.forEach((ticket, i) => {
-      if (ticket.id === id) {
-        newArr[i].hidden = true;
-        setSortByTime([newArr, sortByTime[1]]);
-      }
-    });
+    const ticket = newArr.find(ticket => ticket.id === id);
+    if(ticket == null){
+      throw new Error('no id found');
+    }
+    ticket.hidden = true;
+    setSortByTime([newArr, sortByTime[1]]);
   }
 
-    function finishLocaly(id, bool){
-      let newArr = sortByTime[0].slice();
-      newArr.forEach((ticket,i) => { 
-        if(ticket.id === id){
-          newArr[i].done = bool;
-          setSortByTime([newArr,sortByTime[1]]);
+    function finishLocaly(id, bool, employe, reason, additional){
+
+      // newArr.forEach((ticket,i) => { 
+      //   if(ticket.id === id){
+      //     newArr[i].done = bool;
+      //     setSortByTime([newArr,sortByTime[1]]);
+      //   }
+      // });
+      const newArr = sortByTime[0].slice();
+      const index = newArr.findIndex(ticket => ticket.id === id);
+      if(index !== -1){
+        newArr[index].employe = employe;
+        newArr[index].done = bool;
+        if(!reason){
+          delete newArr[index].reason;
+        }else{
+          newArr[index].reason = reason;
         }
-      })
+        if(!additional){
+          delete newArr[index].additional;
+        }else{
+          newArr[index].additional = additional;
+        }
+        setSortByTime([newArr, sortByTime[1]]);
+      }
   }
 
   function revealHidden() {
     const newArr = sortByTime[0].slice();
     newArr.forEach((ticket, i) => {
-      if(showFinished){
-        if (ticket.hidden && ticket.done) {
+        if (ticket.hidden && ticket.done === showFinished) {
           delete newArr[i].hidden;
         }
-      }else{
-        if (ticket.hidden && !ticket.done) {
-          delete newArr[i].hidden;
-        }
-      }
     });
     setSortByTime([newArr, sortByTime[1]]);
   }
@@ -116,7 +135,7 @@ function App() {
     },
   }));
   const classes = useStyles();
-  let myCounter = !showFinished? hiddenCounter1 : hiddenCounter2;
+
   // const filteredList = TicketArr.filter(ticket=> !ticket.hidden);
   return (
     <div className="myApp">
@@ -214,7 +233,7 @@ function App() {
               ) : <div />
             }
           </div>
-          <div id='switchLists' style={{ cursor: 'pointer' }} onClick={() => { setShowFinished(!showFinished); }}>
+          <div id='switchLists' style={{ cursor: 'pointer' }} onClick={() => { showFinished === undefined ? setShowFinished(true): setShowFinished(undefined) }}>
             {!showFinished ? 'Show Handled Tickets' : 'Show Active Tickets'}
           </div>
         </div>
