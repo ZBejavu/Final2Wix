@@ -2,10 +2,7 @@ const puppeteer = require('puppeteer');
 const nock = require('nock');
 const useNock = require('nock-puppeteer');
 //const request = require('supertest');
-const app = require('../../server/app');
 //const axios = require('axios');
-const { ExpansionPanelActions } = require('@material-ui/core');
-
 const mockData1 = [
     {
       "id": "dd63145f-6340-5fa7-8619-2f44dbf63fd7",
