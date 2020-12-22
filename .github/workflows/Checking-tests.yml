@@ -27,6 +27,7 @@ jobs:
   client-tests: 
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install Client dependencies
         run: npm i
         working-directory: ./client
