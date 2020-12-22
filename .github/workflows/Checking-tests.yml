@@ -1,0 +1,45 @@
+name: Check Tests
+
+on:
+  push:
+    branches:
+    - test-workflow 
+
+jobs:   
+  server-tests:
+      # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Server dependencies
+        run: npm i
+        working-directory: ./server
+      - name: run server tests
+        run: npm run test
+        working-directory: ./server
+      # - name: migrate database and test
+      #   run: npm run spintest
+      #   env:
+      #     MYSQL_DATABASE_TEST: database_test
+      #     MYSQL_PASSWORD: null
+      #   working-directory: ./server
+
+  client-tests: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Client dependencies
+        run: npm i
+        working-directory: ./client
+      - name: Run Client
+        run: npm start & npx wait-on http://localhost:3000
+        working-directory: ./client
+      - name: Run Client Tests
+        run: npm run test
+        working-directory: ./client
+      - uses: actions/checkout@v2
+      # - name: migrate database and test
+      #   run: npm run spintest
+      #   env:
+      #     MYSQL_DATABASE_TEST: database_test
+      #     MYSQL_PASSWORD: null
+      #   working-directory: ./server

@@ -12,7 +12,6 @@ function Ticket(props) {
   const arr2 = str.split('\n');
 
   const [contentToDisplay, setContent] = useState(smallerContent);
-
   function showMoreOrLess() {
     if (contentToDisplay.length === arr2.length) {
       setContent(smallerContent);

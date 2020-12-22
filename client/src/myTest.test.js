@@ -68,8 +68,8 @@ test('handlingTicket', async () => {
     const ActiveListAfterDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     expect(ActiveListAfterDone).toBe((ActiveListBeforeDone-1).toString());
     await (await page.$('#switchLists')).click();
-    await page.waitForSelector(`.ticket`, {visible: true});
-    const ticketTofind = await page.$(`.ticket`);
+    await page.waitForSelector(`#${myTicketId}`, {visible: true});
+    const ticketTofind = await page.$(`#${myTicketId}`);
     const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
     const description = await ticketTofind.$eval('#additionalInfo', e => e.innerText);
     const myReason = await ticketTofind.$eval('#myReason', e => e.innerText);

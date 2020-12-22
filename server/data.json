@@ -19,7 +19,11 @@
     "labels": [
       "Corvid",
       "Guidelines"
-    ]
+    ],
+    "employe": "Dillian",
+    "additional": "undefined",
+    "done": true,
+    "reason": "Handled the Problem"
   },
   {
     "id": "ab6fc754-0e01-5cfb-84b9-cf37c1c0cdb5",
@@ -30,7 +34,9 @@
       "Collapse",
       "Expand"
     ],
-    "creationTime": 1517833093439
+    "creationTime": 1517833093439,
+    "employe": "Zach",
+    "additional": "customer reached out"
   },
   {
     "id": "82150d9f-f12c-5545-8329-6eaa80cb9ebd",
@@ -66,7 +72,11 @@
     "creationTime": 1535681533617,
     "labels": [
       "View Count"
-    ]
+    ],
+    "done": true,
+    "employe": "zach",
+    "reason": "Handled the Problem",
+    "additional": "No user response"
   },
   {
     "id": "e35f54a8-8794-5d1e-915d-202138500e9b",
@@ -199,7 +209,9 @@
     "title": "Calling a module from job scheduler",
     "content": "Hi\n\nI made a jobs scheduler and I need it to use a module (.jsw), not a .js because I want to send data threw Zapier once a day.\n\nis it possible?\n\n-----------------------------------\njobs.config:\n \n{\n \"jobs\": [\n    {\n \"functionLocation\": \"/dailyReport.report\",\n \"description\": \"daily report\",\n \"executionConfig\": {\n \"time\": \"11:14\"\n      }\n    }\n  ]\n}\n\ndailyReport.jsw:\n\n \nimport {usewebhook} from 'backend/useWebhook.jsw';\nimport wixData from 'wix-data';\n\n\nexport function report (){\n let data = {\"data\": \"something\"};\n let url = \"https://hooks.zapier.com/**********\";\n\n    usewebhook (data, url);\n}\n",
     "userEmail": "rovtimov@epasfo.gh",
-    "creationTime": 1529587395310
+    "creationTime": 1529587395310,
+    "employe": "shachar",
+    "additional": "blabla"
   },
   {
     "id": "fb09f153-aafd-5e8a-8062-0a2a1a92772c",
@@ -850,7 +862,9 @@
     "title": "Trouble adding LinkedIn Company Follow Button",
     "content": "I'm having trouble adding a LinkedIn Company Follow button.  I went to this LinkedIn page where it generates code for you to add this button to your site: https://developer.linkedin.com/plugins/follow-company\n\nThis is the code they gave me:\n\n<script src=\"//platform.linkedin.com/in.js\" type=\"text/javascript\"> lang: en_US</script>\n<script type=\"IN/FollowCompany\" data-id=\"27193937\"></script>\n\nBut I can't seem to add it to my Wix site.\n\nPlease help.\n\nThanks!\n\n-Noah",
     "userEmail": "nimwa@ogela.dm",
-    "creationTime": 1546281365946
+    "creationTime": 1546281365946,
+    "employe": "Brian",
+    "additional": "customer reached out"
   },
   {
     "id": "1e0205cc-e243-5f0c-95f9-b679c962bd7c",
