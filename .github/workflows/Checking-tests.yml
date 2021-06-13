@@ -81,6 +81,7 @@ jobs:
           branch: gh-pages # The branch the action should deploy to.
           folder: ./client/storybook-static # The folder the action should deploy.
           target-folder: pull/${{ steps.findPr.outputs.pr }}
+
       # - name: migrate database and test
       #   run: npm run spintest
       #   env:
