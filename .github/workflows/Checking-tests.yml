@@ -1,7 +1,7 @@
 name: Check Tests
 
 on:
-  pull:
+  pull_request:
     branches:
     - workBranch
     - master
