@@ -50,6 +50,7 @@ jobs:
             echo "$(ls -d ./screenshots)"
             echo ::set-output name=result::false
           fi
+        working-directory: ./client/src
         id: shouldUpload
       - name: check previous action
         if: steps.shouldUpload.outputs.result == 'true'
