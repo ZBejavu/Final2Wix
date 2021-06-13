@@ -32,7 +32,6 @@ jobs:
       - name: Find PR number
         run: echo "PR_NUMBER=$(jq --raw-output .pull_request.number '$GITHUB_EVENT_PATH')" >> $GITHUB_ENV
       - run: echo "Your PR is $PR_NUMBER"
-        if: $PR_NUMBER
       - name: Install Client dependencies
         run: npm i
         working-directory: ./client
