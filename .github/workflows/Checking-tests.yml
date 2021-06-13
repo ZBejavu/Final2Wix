@@ -32,6 +32,8 @@ jobs:
       - name: Find PR number
         uses: jwalton/gh-find-current-pr@v1
         id: findPr
+      - name: checking the PR number checker
+        run: echo "the branch output is ${{ steps.findPr.outputs.pr }}""
       - name: Install Client dependencies
         run: npm i
         working-directory: ./client
