@@ -30,7 +30,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Find PR number
-        run: echo "PR_NUMBER=$(jq --raw-output .pull_request.number '$GITHUB_EVENT_PATH')" >> $GITHUB_ENV
+        run: |
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo "PR_NUMBER=$pull_number" >> $GITHUB_ENV
+          echo "pr number is $pull_number"
       - run: echo "Your PR is $PR_NUMBER"
       - name: Install Client dependencies
         run: npm i
