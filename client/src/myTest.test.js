@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const nock = require('nock');
 const useNock = require('nock-puppeteer');
+const mkdirp = require('mkdirp');
 //const request = require('supertest');
 //const axios = require('axios');
 const mockData1 = [
@@ -66,6 +67,11 @@ test('handlingTicket', async () => {
     expect(ActiveListAfterDone).toBe((ActiveListBeforeDone-1).toString());
     await (await page.$('#switchLists')).click();
     await page.waitForSelector(`#${myTicketId}`, {visible: true});
+    mkdirp('screenshots')
+    await page.screenshot({                      // Screenshot the website using defined options
+      path: "screenshots/screenshot.png",                   // Save the screenshot in current directory
+      fullPage: true                              // take a fullpage screenshot
+    });
     const ticketTofind = await page.$(`#${myTicketId}`);
     const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
     const description = await ticketTofind.$eval('#additionalInfo', e => e.innerText);

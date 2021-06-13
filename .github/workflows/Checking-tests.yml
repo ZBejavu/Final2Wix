@@ -1,9 +1,10 @@
 name: Check Tests
 
 on:
-  push:
+  pull:
     branches:
-    - test-workflow 
+    - workBranch
+    - master
 
 jobs:   
   server-tests:
@@ -37,6 +38,11 @@ jobs:
       - name: Run Client Tests
         run: npm run test
         working-directory: ./client
+      - name: Upload Client Screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: ./client/screenshots
       # - name: migrate database and test
       #   run: npm run spintest
       #   env:
