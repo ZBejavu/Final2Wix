@@ -33,7 +33,6 @@ jobs:
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           echo "PR_NUMBER=pr#$pull_number" >> $GITHUB_ENV
-          echo "pr number is $pull_number"
       - run: echo "Your PR is $PR_NUMBER"
       - name: Install Client dependencies
         run: npm i
@@ -83,7 +82,7 @@ jobs:
           repositoryName: ZBejavu/Final2Wix
           branch: gh-pages # The branch the action should deploy to.
           folder: ./client/storybook-static # The folder the action should deploy.
-          target-folder: pull/$PR_NUMBER
+          target-folder: pull/test$PR_NUMBER
 
       # - name: migrate database and test
       #   run: npm run spintest
