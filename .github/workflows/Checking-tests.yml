@@ -32,7 +32,7 @@ jobs:
       - name: Find PR number
         uses: jwalton/gh-find-current-pr@v1
         id: findPr
-      - run: echo "Your PR is ${PR}"
+      - run: echo "Your PR is $PR"
         if: success() && steps.findPr.outputs.number
         env:
           PR: ${{ steps.findPr.outputs.pr }}
