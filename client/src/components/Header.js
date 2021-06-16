@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
   return (
-    <div className="header">Wix Ticket Manager</div>
+    <div className="header">Percy Snapshot Fail</div>
   );
 }
 
