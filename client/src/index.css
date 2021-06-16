@@ -1,12 +1,165 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: rgb(37, 55, 66);
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.ticketContainer{
+  margin: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items:  center;
+  justify-content: space-evenly;
+}
+.ticket{
+  width: 80vh;
+  padding: 1vh;
+  margin-top: 2vh;
+  background-color:rgb(180, 199, 216);
+  box-sizing: border-box;
+  border-radius: 4px;
+  word-wrap: break-word;
+  box-shadow: 0 0 10px #000;
+}
+.ticketTitle{
+  font-size: 1.6rem;
+  font-weight: 500;
 
+}
+.ticketContent{
+  margin: 1vh;
+  font-size: 1.25rem;
+}
+.viewMore{
+  font-size:1.2rem;
+  height: 0.5vh;
+  font-weight: 500;
+  cursor: pointer;
+  color: rgb(67, 154, 236);
+  margin-left: 1vh;
+  display: inline-block;
+}
+.myApp{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.ticketFooter{
+  display:flex;
+  justify-content: space-between;
+}
+.mailAndTime{
+  display:flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.showingResults{
+  width: 80vh;
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: bold;
+  justify-content: space-between;
+
+}
+#restoreHideTickets:hover{
+  cursor: pointer;
+}
+#restoreHideTickets{
+  color:rgb(79, 79, 230);
+}
+.time{
+  margin-left: 0.7vh;
+}
+.mail{
+  color:rgb(167, 109, 44);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+#labelBtn:hover{
+  cursor: default;
+  transform:scale(1);
+  box-shadow: 0 0 2.5px #000;
+}
+
+
+.ticket:hover .hideTicketButton{
+  cursor:pointer;
+  color: rgb(33, 119, 200);
+  opacity: 1;
+}
+
+.hideTicketButton{
+  opacity: 0;
+  transition: all 0.2s;
+  float: right;
+  font-size:1.5rem;
+  color:transparent;
+}
+#labelBtn{
+  transition-duration: 0.2s;
+  cursor: default;
+  margin-left: 0.7vh;
+  background-color: rgb(88, 88, 219);
+  border-radius: 5px;
+  border-width: 0.05rem;
+  font-size: 1.1rem;
+  font-family: cursive;
+}
+.header{
+  font-size: 3rem;
+  display: flex;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(61, 75, 83);
+  height: 12vh;
+}
+.red{
+  color:rgb(126, 33, 33);
+  color:rgb(236, 221, 84);
+}
+.reverseDate{
+  color:rgb(79, 79, 230);
+  cursor: pointer;
+}
+.paper{
+  position: 'absolute';
+  margin: auto;
+  margin-top : 20vh;
+  width:fit-content;
+  height: fit-content;
+  background-color: rgb(179, 179, 218);
+  border: 2px solid #000;
+  box-shadow: rgb(75, 73, 71);
+  padding: 15px;
+  padding-top: 5px;
+}
+.closeModal:hover {
+  cursor: pointer;
+  transform:scale(1.2);
+}
+.closeModal{
+  transition-duration: 0.15s;
+  float:right;
+  font-size: 130%;
+  color:rgb(172, 33, 33);
+  font-weight: 600;
+}
+.employeId{
+  display: flex;
+  width:fit-content;
+  font-size: 2vh;
+  align-items: flex-end;
+  justify-content: start;
+  font-weight: 600;
+}
+.paper h2{
+  width: 90%;
+  text-align:center;
+  align-self: center;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
