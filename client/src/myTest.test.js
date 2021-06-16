@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const percySnapshot = require('@percy/puppeteer')
 const nock = require('nock');
 const useNock = require('nock-puppeteer');
 const mkdirp = require('mkdirp');
@@ -60,28 +61,16 @@ test('handlingTicket', async () => {
         .get('/api/tickets')
         .query(() => true)
         .reply(200, mockData2);
-    mkdirp('src/screenshots/temp1')
-    await page.screenshot({                      // Screenshot the website using defined options
-      path: "src/screenshots/temp1/screenshot2.png",                   // Save the screenshot in current directory
-      fullPage: true                              // take a fullpage screenshot
-    });
+    await percySnapshot(page, 'screenshot1');
         await (await page.$('#confirmButton')).click();
         await page.goto('http://localhost:3000/', { waitUntil: 'networkidle0' });
     await page.waitForSelector('#switchLists', {visible: true});
     const ActiveListAfterDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     expect(ActiveListAfterDone).toBe((ActiveListBeforeDone-1).toString());
-    mkdirp('src/screenshots/temp')  
-    await page.screenshot({                      // Screenshot the website using defined options
-      path: "src/screenshots/temp/screenshot1.png",                   // Save the screenshot in current directory
-      fullPage: true                              // take a fullpage screenshot
-    });
+    await percySnapshot(page, 'screenshot2');
     await (await page.$('#switchLists')).click();
     await page.waitForSelector(`#${myTicketId}`, {visible: true});
-    mkdirp('src/screenshots')
-    await page.screenshot({                      // Screenshot the website using defined options
-      path: "src/screenshots/screenshot.png",                   // Save the screenshot in current directory
-      fullPage: true                              // take a fullpage screenshot
-    });
+    await percySnapshot(page, 'screenshot3');
     const ticketTofind = await page.$(`#${myTicketId}`);
     const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
     const description = await ticketTofind.$eval('#additionalInfo', e => e.innerText);

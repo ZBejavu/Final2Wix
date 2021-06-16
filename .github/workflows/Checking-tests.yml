@@ -42,6 +42,8 @@ jobs:
         working-directory: ./client
       - name: Run Client Tests
         run: npm run test
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         working-directory: ./client
       - name: Check if there are screenshots
         run: |
