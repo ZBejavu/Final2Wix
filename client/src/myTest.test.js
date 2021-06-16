@@ -1,11 +1,10 @@
 const puppeteer = require('puppeteer');
+const percySnapshot = require('@percy/puppeteer')
 const nock = require('nock');
 const useNock = require('nock-puppeteer');
+const mkdirp = require('mkdirp');
 //const request = require('supertest');
-const app = require('../../server/app');
 //const axios = require('axios');
-const { ExpansionPanelActions } = require('@material-ui/core');
-
 const mockData1 = [
     {
       "id": "dd63145f-6340-5fa7-8619-2f44dbf63fd7",
@@ -62,14 +61,17 @@ test('handlingTicket', async () => {
         .get('/api/tickets')
         .query(() => true)
         .reply(200, mockData2);
+    await percySnapshot(page, 'screenshot1');
         await (await page.$('#confirmButton')).click();
         await page.goto('http://localhost:3000/', { waitUntil: 'networkidle0' });
     await page.waitForSelector('#switchLists', {visible: true});
     const ActiveListAfterDone = await page.$eval('#ticketsYouSee', e => e.innerText);
     expect(ActiveListAfterDone).toBe((ActiveListBeforeDone-1).toString());
+    await percySnapshot(page, 'screenshot2');
     await (await page.$('#switchLists')).click();
-    await page.waitForSelector(`.ticket`, {visible: true});
-    const ticketTofind = await page.$(`.ticket`);
+    await page.waitForSelector(`#${myTicketId}`, {visible: true});
+    await percySnapshot(page, 'screenshot3');
+    const ticketTofind = await page.$(`#${myTicketId}`);
     const employeId = await ticketTofind.$eval('#myEmploye', e => e.innerText);
     const description = await ticketTofind.$eval('#additionalInfo', e => e.innerText);
     const myReason = await ticketTofind.$eval('#myReason', e => e.innerText);

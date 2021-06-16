@@ -1,0 +1,94 @@
+name: Check Tests
+
+on:
+  pull_request:
+    branches:
+    - workBranch
+    - master
+
+jobs:   
+  server-tests:
+      # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Server dependencies
+        run: npm i
+        working-directory: ./server
+      - name: run server tests
+        run: npm run test
+        working-directory: ./server
+      # - name: migrate database and test
+      #   run: npm run spintest
+      #   env:
+      #     MYSQL_DATABASE_TEST: database_test
+      #     MYSQL_PASSWORD: null
+      #   working-directory: ./server
+
+  client-tests: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find PR number
+        run: |
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo "PR_NUMBER=pr#$pull_number" >> $GITHUB_ENV
+      - run: echo "Your PR is $PR_NUMBER"
+      - name: Install Client dependencies
+        run: npm i
+        working-directory: ./client
+      - name: Run Client
+        run: npm start & npx wait-on http://localhost:3000
+        working-directory: ./client
+      - name: Run Client Tests
+        run: npm run test
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        working-directory: ./client
+      - name: Check if there are screenshots
+        run: |
+          if [ "$(ls -d ./screenshots)" = "./screenshots" ]; then
+            echo 'there are snapshots to go over'
+            echo ::set-output name=result::true
+          else
+            echo "$(ls -d ./screenshots)"
+            echo ::set-output name=result::false
+          fi
+        working-directory: ./client/src
+        id: shouldUpload
+      # - name: check previous action
+      #   if: steps.shouldUpload.outputs.result == 'false'
+      #   run: echo "not going to upload"
+      - name: Upload Client Screenshots
+        if: steps.shouldUpload.outputs.result == 'true'
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: ./client/screenshots
+      - name: Git Identity
+        if: steps.shouldUpload.outputs.result == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install and Build 🔧
+        if: steps.shouldUpload.outputs.result == 'true'
+        run: npm run build-storybook
+        working-directory: ./client
+      - name: Deploy to Github Pages 🚀
+        if: steps.shouldUpload.outputs.result == 'true'
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        with:
+          repositoryName: ZBejavu/Final2Wix
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./client/storybook-static # The folder the action should deploy.
+          target-folder: pull/test$PR_NUMBER
+
+      # - name: migrate database and test
+      #   run: npm run spintest
+      #   env:
+      #     MYSQL_DATABASE_TEST: database_test
+      #     MYSQL_PASSWORD: null
+      #   working-directory: ./server

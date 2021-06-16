@@ -59,13 +59,6 @@ function App() {
   }, [dateRange, TicketArr]);
 
   function hideItem(id) {
-
-    // newArr.forEach((ticket, i) => {
-    //   if (ticket.id === id) {
-    //     newArr[i].hidden = true;
-    //     setSortByTime([newArr, sortByTime[1]]);
-    //   }
-    // });
     const newArr = sortByTime[0].slice();
     const ticket = newArr.find(ticket => ticket.id === id);
     if(ticket == null){
@@ -76,13 +69,6 @@ function App() {
   }
 
     function finishLocaly(id, bool, employe, reason, additional){
-
-      // newArr.forEach((ticket,i) => { 
-      //   if(ticket.id === id){
-      //     newArr[i].done = bool;
-      //     setSortByTime([newArr,sortByTime[1]]);
-      //   }
-      // });
       const newArr = sortByTime[0].slice();
       const index = newArr.findIndex(ticket => ticket.id === id);
       if(index !== -1){
