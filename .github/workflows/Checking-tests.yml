@@ -58,7 +58,7 @@ jobs:
             git branch
             git add client/src/screenshots
             git commit -m "updating snapshots from test results"
-            git push origin
+            git push
           else
             echo "no changes";
           fi
