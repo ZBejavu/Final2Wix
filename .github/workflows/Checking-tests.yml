@@ -54,7 +54,6 @@ jobs:
           else
             echo "no changes";
           fi
-        working-directory: ./client/src
         id: shouldUpload
       # - name: check previous action
       #   if: steps.shouldUpload.outputs.result == 'false'
