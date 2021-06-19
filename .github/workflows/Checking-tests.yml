@@ -57,7 +57,7 @@ jobs:
           if [ -n "$(git status --porcelain client/src/screenshots)" ]; then
             git add client/src/screenshots
             git commit -m "updating snapshots from test results"
-            git push -u origin
+            git push origin
           else
             echo "no changes";
           fi
