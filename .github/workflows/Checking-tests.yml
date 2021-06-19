@@ -45,14 +45,14 @@ jobs:
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         working-directory: ./client
-      - name: Check if there are screenshots
+      - name: If the screenshots had updated, commit the changes
         run: |
-          if [ "$(ls -d ./screenshots)" = "./screenshots" ]; then
-            echo 'there are snapshots to go over'
-            echo ::set-output name=result::true
+          if [ -n "$(git status --porcelain e2e/snapshots)" ]; then
+            git add e2e/snapshots
+            git commit -m "updating snapshots from test results"
+            git push -u origin master
           else
-            echo "$(ls -d ./screenshots)"
-            echo ::set-output name=result::false
+            echo "no changes";
           fi
         working-directory: ./client/src
         id: shouldUpload
