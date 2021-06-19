@@ -45,6 +45,14 @@ jobs:
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         working-directory: ./client
+      - name: Git Identity
+        if: steps.shouldUpload.outputs.result == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: If the screenshots had updated, commit the changes
         run: |
           if [ -n "$(git status --porcelain client/src/screenshots)" ]; then
@@ -64,14 +72,6 @@ jobs:
         with:
           name: screenshots
           path: ./client/screenshots
-      - name: Git Identity
-        if: steps.shouldUpload.outputs.result == 'true'
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install and Build 🔧
         if: steps.shouldUpload.outputs.result == 'true'
         run: npm run build-storybook
