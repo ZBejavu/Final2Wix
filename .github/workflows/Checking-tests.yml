@@ -46,7 +46,6 @@ jobs:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         working-directory: ./client
       - name: Git Identity
-        if: steps.shouldUpload.outputs.result == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
