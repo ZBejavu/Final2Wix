@@ -55,8 +55,9 @@ jobs:
       - name: If the screenshots had updated, commit the changes
         run: |
           if [ -n "$(git status --porcelain client/src/screenshots)" ]; then
+            git add client/src/screenshots
             git commit -m "updating snapshots from test results"
-            git push -u origin master
+            git push -u origin ${GITHUB_REF#refs/heads/}
           else
             echo "no changes";
           fi
