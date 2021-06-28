@@ -56,11 +56,14 @@ jobs:
         env:
           WRITE_ACCESS: ${{ secrets.WRITE_ACCESS }}
       - name: If the screenshots had updated, commit the changes
-        if: git status --porcelain client/src/screenshots
         run: |
-          git add client/src/screenshots
-          git commit -m "updating snapshots from test results"
-          git push
+          if [ -n "$(git status --porcelain client/src/screenshots)" ]; then
+            git add client/src/screenshots
+            git commit -m "updating snapshots from test results"
+            git push
+          else
+            echo "no changes";
+          fi
         id: shouldUpload
       # - name: check previous action
       #   if: steps.shouldUpload.outputs.result == 'false'
