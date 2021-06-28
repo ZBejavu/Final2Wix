@@ -29,6 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Find PR number
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
@@ -45,16 +48,22 @@ jobs:
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         working-directory: ./client
-      - name: Check if there are screenshots
+      - name: Git Identity
         run: |
-          if [ "$(ls -d ./screenshots)" = "./screenshots" ]; then
-            echo 'there are snapshots to go over'
-            echo ::set-output name=result::true
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${WRITE_ACCESS}@github.com/$GITHUB_REPOSITORY
+        env:
+          WRITE_ACCESS: ${{ secrets.WRITE_ACCESS }}
+      - name: If the screenshots had updated, commit the changes
+        run: |
+          if [ -n "$(git status --porcelain client/src/screenshots)" ]; then
+            git add client/src/screenshots
+            git commit -m "updating snapshots from test results"
+            git push
           else
-            echo "$(ls -d ./screenshots)"
-            echo ::set-output name=result::false
+            echo "no changes";
           fi
-        working-directory: ./client/src
         id: shouldUpload
       # - name: check previous action
       #   if: steps.shouldUpload.outputs.result == 'false'
@@ -65,14 +74,6 @@ jobs:
         with:
           name: screenshots
           path: ./client/screenshots
-      - name: Git Identity
-        if: steps.shouldUpload.outputs.result == 'true'
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install and Build 🔧
         if: steps.shouldUpload.outputs.result == 'true'
         run: npm run build-storybook
